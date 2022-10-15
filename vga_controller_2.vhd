@@ -25,8 +25,8 @@ entity vga_controller_2 is
 	port(
 		clk_gate					:	in std_logic;	-- clock de 25 MHz
 		clk						:	in std_logic;
-		row_position			: 	out unsigned (9 downto 0); 	-- sortie de la position verticale 
-		column_position		:	out unsigned (9 downto 0);	-- sortie de la position horizontale
+		row_position			: 	out unsigned (10 downto 0); 	-- sortie de la position verticale 
+		column_position		:	out unsigned (10 downto 0);	-- sortie de la position horizontale
 		h_sync					:	out std_logic;	-- signal de sortie H_SYNC du VGA
 		v_sync					: 	out std_logic;	-- signal de sortie V_SYNC du VGA
 		ctrl_area				:	out std_logic 	-- signal de sortie commandant le multiplexer pour l'affichage des couleurs
@@ -38,10 +38,10 @@ architecture arch_vga_controller_2 of vga_controller_2 is
 	constant H_PERIOD : integer := H_BACK_PORCH + H_SYNC_PULSE + H_FRONT_PORCH + H_PIXELS; -- Calcul de la période horizontale totale de l'écran
 	constant V_PERIOD : integer := V_BACK_PORCH + V_SYNC_PULSE + V_FRONT_PORCH + V_PIXELS; -- Calcul de la préiode verticale totale de l'écran
 
-	signal h_count_curr : unsigned (9 downto 0) := (others =>'0'); -- Valeur max : 800
-	signal h_count_next : unsigned (9 downto 0) := (others =>'0'); 
-	signal v_count_curr : unsigned (9 downto 0) := (others =>'0'); -- valeur max : 525
-	signal v_count_next : unsigned (9 downto 0) := (others =>'0');
+	signal h_count_curr : unsigned (10 downto 0) := (others =>'0'); -- Valeur max : 800
+	signal h_count_next : unsigned (10 downto 0) := (others =>'0'); 
+	signal v_count_curr : unsigned (10 downto 0) := (others =>'0'); -- valeur max : 525
+	signal v_count_next : unsigned (10 downto 0) := (others =>'0');
 	
 
 	
