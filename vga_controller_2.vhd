@@ -48,7 +48,7 @@ architecture arch_vga_controller_2 of vga_controller_2 is
 	
 	begin 
 	
-	p_vga_cont_comb : process(clk, clk_gate, reset) is 
+	p_vga_cont_comb : process(clk, clk_gate) is 
 	
 	begin
 	
@@ -105,7 +105,7 @@ architecture arch_vga_controller_2 of vga_controller_2 is
 			
 				h_count_curr <= h_count_next;
 				v_count_curr <= v_count_next;		
-		--	end if;
+		--end if;
 			
 		end if;
 	
