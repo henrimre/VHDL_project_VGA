@@ -8,16 +8,18 @@ use ieee.numeric_std.all;
 entity vga_controller_2 is 
 	generic(
 		--Les valeurs ci-dessous sont propres à l'écran utilisé dans le cadre du projet. 
-		H_BACK_PORCH	: integer 	:= 148; 
-		H_SYNC_PULSE	: integer 	:= 44;
-		H_FRONT_PORCH	: integer 	:= 88;
-		H_PIXELS			: integer 	:= 1920;
+		H_BACK_PORCH	: integer 	:= 48; 
+		H_SYNC_PULSE	: integer 	:= 96;
+		H_FRONT_PORCH	: integer 	:= 16;
+		H_PIXELS			: integer 	:= 640;
+		H_POL				: std_logic := '1'; --polarité positive
 		
 		
-		V_BACK_PORCH	: integer 	:= 36;
-		V_SYNC_PULSE	: integer 	:= 5;
-		V_FRONT_PORCH	: integer	:= 4;
-		V_PIXELS			: integer	:= 1080
+		V_BACK_PORCH	: integer 	:= 33;
+		V_SYNC_PULSE	: integer 	:= 2;
+		V_FRONT_PORCH	: integer	:= 10;
+		V_PIXELS			: integer	:= 480;
+		V_POL				: std_logic	:= '1' --polarité positive
 	);
 	
 	port(
@@ -68,16 +70,16 @@ architecture arch_vga_controller_2 of vga_controller_2 is
 
 				--Horizontal Time Comparator : création du signal H_SYNC du VGA
 				if (h_count_curr < H_PIXELS + H_FRONT_PORCH or h_count_curr >= H_PERIOD - H_BACK_PORCH) then 
-					h_sync <= '0'; -- signal bas lorsqu'on est dans la partie : pixel, front and back porch car polarité positive
+					h_sync <= not H_POL; -- signal bas lorsqu'on est dans la partie : pixel, front and back porch car polarité positive
 				else 
-					h_sync <= '1'; -- signal haut lorsqu'on est dans la partie : sync pulse
+					h_sync <= H_POL; -- signal haut lorsqu'on est dans la partie : sync pulse
 				end if;
 				
 				--Vertical Time Comparator : création du signal H_SYNC du VGA
 				if (v_count_curr < V_PIXELS + V_FRONT_PORCH or v_count_curr >= V_PERIOD - V_BACK_PORCH) then	
-					v_sync <= '0'; -- signal bas lorsqu'on est dans la partie : pixel (display time), front and back porch 
-				else 
-					v_sync <= '1'; -- signal haut lorsqu'on est dans la partie : sync pul
+					v_sync <= not V_POL; -- signal bas lorsqu'on est dans la partie : pixel (display time), front and back porch 
+				else
+					v_sync <= V_POL; -- signal haut lorsqu'on est dans la partie : sync pul
 				end if;
 				
 				-- Display area comparator :
