@@ -12,8 +12,8 @@ architecture tb of tb_vga_controller_2 is
 	signal clk_gate			: std_logic := '0';
 	signal clk 					: std_logic := '0';
 	
-	signal row_position		: unsigned (10 downto 0) := (others => '0'); 	-- sortie de la position verticale 
-	signal column_position	: unsigned (11 downto 0) := (others => '0');	-- sortie de la position horizontale
+	signal row_position		: unsigned (9 downto 0) := (others => '0'); 	-- sortie de la position verticale 
+	signal column_position	: unsigned (9 downto 0) := (others => '0');	-- sortie de la position horizontale
 	signal h_sync				: std_logic := '0';	-- signal de sortie H_SYNC du VGA
 	signal v_sync				: std_logic := '0';	-- signal de sortie V_SYNC du VGA
 	signal ctrl_area			: std_logic := '1'; 	-- signal de sortie commandant le multiplexer pour l'affichage des couleurs
