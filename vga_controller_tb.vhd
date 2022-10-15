@@ -39,4 +39,5 @@ begin
 		wait for 40 ns/2;
 	end process p_stimuli_clk_gate;
 
+
 end tb;
