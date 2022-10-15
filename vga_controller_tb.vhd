@@ -11,6 +11,7 @@ architecture tb of tb_vga_controller_2 is
 	
 	signal clk_gate			: std_logic := '0';
 	signal clk 					: std_logic := '0';
+	signal reset				: std_logic := '1';
 	
 	signal row_position		: unsigned (10 downto 0) := (others => '0'); 	-- sortie de la position verticale 
 	signal column_position	: unsigned (10 downto 0) := (others => '0');	-- sortie de la position horizontale
@@ -20,7 +21,7 @@ architecture tb of tb_vga_controller_2 is
 
 begin
 	
-	UUT : entity work.vga_controller_2 port map(clk => clk, clk_gate => clk_gate,	row_position => row_position,	column_position => column_position, h_sync => h_sync,	v_sync => v_sync,	ctrl_area => ctrl_area);
+	UUT : entity work.vga_controller_2 port map(clk => clk, clk_gate => clk_gate,	row_position => row_position,	column_position => column_position, h_sync => h_sync,	v_sync => v_sync,	ctrl_area => ctrl_area, reset => reset);
 	
 	p_stimuli_clk : process
 	begin 

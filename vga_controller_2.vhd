@@ -25,6 +25,7 @@ entity vga_controller_2 is
 	port(
 		clk_gate					:	in std_logic;	-- clock de 25 MHz
 		clk						:	in std_logic;
+	--	reset						:	in std_logic;
 		row_position			: 	out unsigned (10 downto 0); 	-- sortie de la position verticale 
 		column_position		:	out unsigned (10 downto 0);	-- sortie de la position horizontale
 		h_sync					:	out std_logic;	-- signal de sortie H_SYNC du VGA
@@ -47,7 +48,7 @@ architecture arch_vga_controller_2 of vga_controller_2 is
 	
 	begin 
 	
-	p_vga_cont_comb : process(clk, clk_gate) is 
+	p_vga_cont_comb : process(clk, clk_gate, reset) is 
 	
 	begin
 	
@@ -96,7 +97,7 @@ architecture arch_vga_controller_2 of vga_controller_2 is
 	end process p_vga_cont_comb;
 	
 	
-	p_vga_cont_seq : process(clk_gate) is
+	p_vga_cont_seq : process(clk) is
 	begin 
 		if (falling_edge(clk)) then 
 		
@@ -104,7 +105,7 @@ architecture arch_vga_controller_2 of vga_controller_2 is
 			
 				h_count_curr <= h_count_next;
 				v_count_curr <= v_count_next;		
-			--end if;
+		--	end if;
 			
 		end if;
 	
