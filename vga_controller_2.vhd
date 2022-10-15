@@ -51,8 +51,6 @@ architecture arch_vga_controller_2 of vga_controller_2 is
 	p_vga_cont_comb : process(clk, clk_gate, reset) is 
 	
 	begin
-	
-	
 		if(falling_edge(clk)) then 
 			
 			if (reset = '0') then
