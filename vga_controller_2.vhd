@@ -99,13 +99,13 @@ architecture arch_vga_controller_2 of vga_controller_2 is
 	
 	p_vga_cont_seq : process(clk) is
 	begin 
-		if (falling_edge(clk)) then 
+		if (rising_edge(clk)) then 
 		
-			--if(clk_gate='1') then
+			if(clk_gate='1') then
 			
 				h_count_curr <= h_count_next;
 				v_count_curr <= v_count_next;		
-		--end if;
+		end if;
 			
 		end if;
 	
