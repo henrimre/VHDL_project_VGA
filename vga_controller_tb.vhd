@@ -23,6 +23,8 @@ begin
 	
 	UUT : entity work.vga_controller_2 port map(clk => clk, clk_gate => clk_gate,	row_position => row_position,	column_position => column_position, h_sync => h_sync,	v_sync => v_sync,	ctrl_area => ctrl_area, reset => reset);
 	
+	reset <= '1', '0' after 70 us, '1' after 80 us;
+	
 	p_stimuli_clk : process
 	begin 
 		clk <= '0';
