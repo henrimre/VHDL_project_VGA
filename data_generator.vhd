@@ -19,8 +19,8 @@ entity data_generator is
 	data_value			: in std_logic_vector(4 downto 0);
 	
 	test					: out std_logic;
-	VGA_R					: out std_logic_vector(3 downto 0)
-	--VGA_G					: out std_logic_vector(3 downto 0);
+	VGA_R					: out std_logic_vector(3 downto 0);
+	VGA_G					: out std_logic_vector(3 downto 0)
 	--VGA_B					: out std_logic_vector(3 downto 0)
 	);
 end data_generator;
@@ -30,23 +30,28 @@ architecture arch_data_generator of data_generator is
 	constant BIG_VAL			: integer := 5;
 	constant MAX_VAL			: integer := 15;
 		
-	signal data_value_trans : std_logic_vector (4 downto 0);
-	signal red_val_cur_1		: unsigned (3 downto 0) := "0100"; --valeur pour partie 1 de l'écran
-	signal red_val_next_1	: unsigned (3 downto 0) := "0100";
-	signal red_val_cur_2		: unsigned (3 downto 0) := "0100"; --valeur pour partie 2 de l'écran
-	signal red_val_next_2	: unsigned (3 downto 0) := "0100";
-	signal red_val_temp_cur	: unsigned (3 downto 0) := "0100";
-	signal red_val_temp_next: unsigned (3 downto 0) := "0100";
+	signal red_data_value_trans 	: std_logic_vector (4 downto 0);
+	signal red_val_cur_1				: unsigned (3 downto 0) := "0100"; --valeur pour partie 1 de l'écran
+	signal red_val_next_1			: unsigned (3 downto 0) := "0100";
+	signal red_val_cur_2				: unsigned (3 downto 0) := "0100"; --valeur pour partie 2 de l'écran
+	signal red_val_next_2			: unsigned (3 downto 0) := "0100";
+	signal red_val_temp_cur			: unsigned (3 downto 0) := "0100";
+	signal red_val_temp_next		: unsigned (3 downto 0) := "0100";
 	
+	signal green_data_value_trans : std_logic_vector(4 downto 0);
+	signal green_val_cur_1			: unsigned (3 downto 0) := "0100";
+	signal green_val_next_1			: unsigned (3 downto 0) := "0100";
+	signal green_val_cur_2			: unsigned (3 downto 0) := "0100";
+	signal green_val_next_2			: unsigned (3 downto 0) := "0100";
+	signal green_val_temp_cur		: unsigned (3 downto 0) := "0100";
+	signal green_val_temp_next		: unsigned (3 downto 0) := "0100";
+		
 	--signal blue_val_cur_1	: unsigned (3 downto 0) := "0100";
 	--signal blue_val_next_1	: unsigned (3 downto 0) := "0100";
 	--signal blue_val_cur_2	: unsigned (3 downto 0) := "0100";
 	--signal blue_val_next_2	: unsigned (3 downto 0) := "0100";
 	
-	--signal green_val_cur_1	: unsigned (3 downto 0) := "0100";
-	--signal green_val_next_1	: unsigned (3 downto 0) := "0100";
-	--signal green_val_cur_2	: unsigned (3 downto 0) := "0100";
-	--signal green_val_next_2	: unsigned (3 downto 0) := "0100";
+
 	
 	begin 
 	
@@ -59,12 +64,12 @@ architecture arch_data_generator of data_generator is
 					if (column_position < H_PIXEL/2) then
 						VGA_R <= std_logic_vector(red_val_cur_1);
 						test <= '1';
-						--VGA_G <= std_logic_vector(green_val_cur_1);
+						VGA_G <= std_logic_vector(green_val_cur_1);
 						--VGA_B <= std_logic_vector(blue_val_cur_1);
 						
 					else 
 						VGA_R <= std_logic_vector(red_val_cur_2);
-						--VGA_G <= std_logic_vector(green_val_cur_2);
+						VGA_G <= std_logic_vector(green_val_cur_2);
 						--VGA_B <= std_logic_vector(blue_val_cur_2);
 
 					end if;
@@ -72,7 +77,7 @@ architecture arch_data_generator of data_generator is
 				else 
 					
 					VGA_R <= std_logic_vector(red_val_cur_1);
-					--VGA_G <= std_logic_vector(green_val_cur_1);
+					VGA_G <= std_logic_vector(green_val_cur_1);
 					--VGA_B <= std_logic_vector(blue_val_cur_1);
 					
 				end if;
@@ -101,23 +106,23 @@ architecture arch_data_generator of data_generator is
 					
 				end if;
 				
-				data_value_trans <= (data_value and "01111");
+				red_data_value_trans <= (data_value and "01111");
 				
-				if (data_value_trans = "00001" and red_val_temp_cur < "1111") then
+				if (red_data_value_trans = "00001" and red_val_temp_cur < "1111") then
 					red_val_temp_next <= red_val_temp_cur + SMALL_VAL;
 					
 					
-				elsif (data_value_trans = "00010" and red_val_temp_cur< "1111") then 
+				elsif (red_data_value_trans = "00010" and red_val_temp_cur< "1111") then 
 					
 					if (red_val_temp_cur > MAX_VAL - BIG_VAL) then
 						red_val_temp_next <= "1111";
 					else red_val_temp_next <= red_val_temp_cur + BIG_VAL;
 					end if;
 				
-				elsif (data_value_trans = "00011" and red_val_cur_1 > "0000")then
+				elsif (red_data_value_trans = "00011" and red_val_cur_1 > "0000")then
 					red_val_temp_next <= red_val_temp_cur - SMALL_VAL;
 				
-				elsif (data_value_trans = "00100" and red_val_temp_cur > "0000") then
+				elsif (red_data_value_trans = "00100" and red_val_temp_cur > "0000") then
 					
 					if (red_val_temp_cur < "0000" + BIG_VAL) then
 						red_val_temp_next <= "0000";
@@ -134,16 +139,74 @@ architecture arch_data_generator of data_generator is
 			end if;
 		end if;
 	end process p_red_data_val;
+		
+	p_green_data_val : process(clk, data_value) is 
+	begin
+	
+		if(rising_edge(clk)) then
 			
+			if(data_value = "00101" 
+				or data_value = "00110"  
+				or data_value = "00111" 
+				or data_value = "01000"
+				or data_value = "10101"
+				or data_value = "10110"
+				or data_value = "10111"
+				or data_value = "11000") then
+			
+				if ((data_value and "10000") = "10000") then -- on est dans état 3 : séparation des couleurs 
+					green_val_temp_cur <= green_val_cur_2; 
+				else 
+					green_val_temp_cur <= green_val_cur_1;
+					
+				end if;
+				
+				green_data_value_trans <= (data_value and "01111");
+				
+				if (green_data_value_trans = "00101" and green_val_temp_cur < "1111") then
+					green_val_temp_next <= green_val_temp_cur + SMALL_VAL;
+					
+					
+				elsif (green_data_value_trans = "00110" and green_val_temp_cur< "1111") then 
+					
+					if (green_val_temp_cur > MAX_VAL - BIG_VAL) then
+						green_val_temp_next <= "1111";
+					else green_val_temp_next <= green_val_temp_cur + BIG_VAL;
+					end if;
+				
+				elsif (green_data_value_trans = "00111" and green_val_cur_1 > "0000")then
+					green_val_temp_next <= green_val_temp_cur - SMALL_VAL;
+				
+				elsif (green_data_value_trans = "01000" and green_val_temp_cur > "0000") then
+					
+					if (green_val_temp_cur < "0000" + BIG_VAL) then
+						green_val_temp_next <= "0000";
+					else green_val_temp_next <= green_val_temp_cur - BIG_VAL; 
+					end if;
+					
+				end if;
+				
+				if ((data_value and "10000") = "10000") then 
+					green_val_next_2 <= green_val_temp_next;
+				else green_val_next_1 <= green_val_temp_next;
+				end if;
+				
+			end if;
+		end if;
+				
+	end process p_green_data_val;
+
+	
 	p_data_gen_seq : process(clk) is
 	begin
 		if (rising_edge(clk)) then
 			red_val_cur_1 		<= red_val_next_1;
 			red_val_cur_2 		<= red_val_next_2;
+			green_val_cur_1 	<= green_val_next_1;				
+			green_val_cur_2 	<= green_val_next_2;
 			--blue_val_cur_1 	<= blue_val_next_1;
 			--blue_val_cur_2 	<= blue_val_next_2;
-			--green_val_cur_1 	<= green_val_next_1;				
-			--green_val_cur_2 	<= green_val_next_2;
+
 		end if;
 		
 	end process p_data_gen_seq;
