@@ -73,17 +73,17 @@ architecture arch_image_generator of image_generator is
 	
 	p_red_data_val : process(data_value) is
 	begin 
-		if ((data_value and "10000") = "10000") then -- on est dans état 3 séparation des couleurs 
+		if ((data_value and "10000") = "10000") then -- on est dans état 3 : séparation des couleurs 
 			red_val_temp_cur <= red_val_cur_2;
 		else red_val_temp_cur <= red_val_cur_1;
 		end if;
 		
 		data_value_trans <= data_value and "01111";
 		
-		if (data_value_trans = "00001" and red_val_cur_1 < "1111") then
+		if (data_value_trans = "00001" and red_val_temp_cur < "1111") then
 			red_val_temp_next <= red_val_temp_cur + SMALL_VAL;
 			
-		elsif (data_value_trans = "00010" and red_val_cur_1< "1111") then 
+		elsif (data_value_trans = "00010" and red_val_temp_cur< "1111") then 
 		
 			if (red_val_temp_cur > MAX_VAL - BIG_VAL) then
 				red_val_temp_next <= "1111";
