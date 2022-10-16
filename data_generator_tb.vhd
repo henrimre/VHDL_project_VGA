@@ -20,7 +20,9 @@ architecture tb of data_generator_tb is
 	signal VGA_R				: std_logic_vector(3 downto 0);
 	--signal VGA_G				: std_logic_vector(3 downto 0);
 	--signal VGA_B				: std_logic_vector(3 downto 0);
+	constant H_PIXEL_TEST	: integer := 300;
 begin 
+	
 	UUT : entity work.data_generator port map(
 	clk => clk, 
 	ctrl_area => ctrl_area,	
@@ -33,7 +35,8 @@ begin
 	--VGA_B => VGA_B
 	);
 	
-	data_value <= "00000", "00001" after 10 us;
+	data_value <= "00000", "10001" after 10 us;
+	column_position <= to_unsigned(H_PIXEL_TEST, 11);
 	
 	p_stimuli_clk : process
 	begin 

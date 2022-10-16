@@ -58,6 +58,7 @@ architecture arch_data_generator of data_generator is
 				if ((data_value and "10000") = "10000") then --on est dans état 3 : séparation de l'écran en 2
 					if (column_position < H_PIXEL/2) then
 						VGA_R <= std_logic_vector(red_val_cur_1);
+						test <= '1';
 						--VGA_G <= std_logic_vector(green_val_cur_1);
 						--VGA_B <= std_logic_vector(blue_val_cur_1);
 						
@@ -104,10 +105,10 @@ architecture arch_data_generator of data_generator is
 				
 				if (data_value_trans = "00001" and red_val_temp_cur < "1111") then
 					red_val_temp_next <= red_val_temp_cur + SMALL_VAL;
-					test <= '1';
+					
 					
 				elsif (data_value_trans = "00010" and red_val_temp_cur< "1111") then 
-				
+					
 					if (red_val_temp_cur > MAX_VAL - BIG_VAL) then
 						red_val_temp_next <= "1111";
 					else red_val_temp_next <= red_val_temp_cur + BIG_VAL;
