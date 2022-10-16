@@ -14,11 +14,11 @@ entity data_generator is
 	port(
 	clk					: in std_logic;
 	ctrl_area			: in std_logic;
-	row_position 		: in unsigned(10 downto 0);
+	--row_position 		: in unsigned(10 downto 0);
 	column_position	: in unsigned(10 downto 0);
 	data_value			: in std_logic_vector(4 downto 0);
 	
-	test					: out std_logic;
+	--test					: out std_logic;
 	VGA_R					: out std_logic_vector(3 downto 0);
 	VGA_G					: out std_logic_vector(3 downto 0);
 	VGA_B					: out std_logic_vector(3 downto 0)
@@ -56,7 +56,7 @@ architecture arch_data_generator of data_generator is
 	
 	begin 
 	
-	p_data_gen_comb : process (clk, ctrl_area, row_position, column_position, data_value) is
+	p_data_gen_comb : process (clk, ctrl_area, column_position, data_value) is
 	begin 
 		if(rising_edge(clk)) then 
 			
@@ -64,7 +64,7 @@ architecture arch_data_generator of data_generator is
 				if ((data_value and "10000") = "10000") then --on est dans état 3 : séparation de l'écran en 2
 					if (column_position < H_PIXEL/2) then
 						VGA_R <= std_logic_vector(red_val_cur_1);
-						test <= '1';
+						--test <= '1';
 						VGA_G <= std_logic_vector(green_val_cur_1);
 						VGA_B <= std_logic_vector(blue_val_cur_1);
 						
