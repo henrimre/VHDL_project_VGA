@@ -19,7 +19,7 @@ architecture tb of data_generator_tb is
 	signal test					: std_logic := '0';
 	signal VGA_R				: std_logic_vector(3 downto 0);
 	signal VGA_G				: std_logic_vector(3 downto 0);
-	--signal VGA_B				: std_logic_vector(3 downto 0);
+	signal VGA_B				: std_logic_vector(3 downto 0);
 	constant H_PIXEL_TEST	: integer := 300;
 begin 
 	
@@ -31,8 +31,8 @@ begin
 	data_value => data_value, 
 	test => test,
 	VGA_R => VGA_R,
-	VGA_G => VGA_G
-	--VGA_B => VGA_B
+	VGA_G => VGA_G,
+	VGA_B => VGA_B
 	);
 	
 	data_value <= "00000", "10001" after 10 us;

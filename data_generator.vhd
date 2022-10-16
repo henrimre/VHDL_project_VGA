@@ -20,8 +20,8 @@ entity data_generator is
 	
 	test					: out std_logic;
 	VGA_R					: out std_logic_vector(3 downto 0);
-	VGA_G					: out std_logic_vector(3 downto 0)
-	--VGA_B					: out std_logic_vector(3 downto 0)
+	VGA_G					: out std_logic_vector(3 downto 0);
+	VGA_B					: out std_logic_vector(3 downto 0)
 	);
 end data_generator;
 	
@@ -46,12 +46,13 @@ architecture arch_data_generator of data_generator is
 	signal green_val_temp_cur		: unsigned (3 downto 0) := "0100";
 	signal green_val_temp_next		: unsigned (3 downto 0) := "0100";
 		
-	--signal blue_val_cur_1	: unsigned (3 downto 0) := "0100";
-	--signal blue_val_next_1	: unsigned (3 downto 0) := "0100";
-	--signal blue_val_cur_2	: unsigned (3 downto 0) := "0100";
-	--signal blue_val_next_2	: unsigned (3 downto 0) := "0100";
-	
-
+	signal blue_data_value_trans : std_logic_vector(4 downto 0);
+	signal blue_val_cur_1			: unsigned (3 downto 0) := "0100";
+	signal blue_val_next_1			: unsigned (3 downto 0) := "0100";
+	signal blue_val_cur_2			: unsigned (3 downto 0) := "0100";
+	signal blue_val_next_2			: unsigned (3 downto 0) := "0100";
+	signal blue_val_temp_cur		: unsigned (3 downto 0) := "0100";
+	signal blue_val_temp_next		: unsigned (3 downto 0) := "0100";
 	
 	begin 
 	
@@ -65,12 +66,12 @@ architecture arch_data_generator of data_generator is
 						VGA_R <= std_logic_vector(red_val_cur_1);
 						test <= '1';
 						VGA_G <= std_logic_vector(green_val_cur_1);
-						--VGA_B <= std_logic_vector(blue_val_cur_1);
+						VGA_B <= std_logic_vector(blue_val_cur_1);
 						
 					else 
 						VGA_R <= std_logic_vector(red_val_cur_2);
 						VGA_G <= std_logic_vector(green_val_cur_2);
-						--VGA_B <= std_logic_vector(blue_val_cur_2);
+						VGA_B <= std_logic_vector(blue_val_cur_2);
 
 					end if;
 
@@ -78,7 +79,7 @@ architecture arch_data_generator of data_generator is
 					
 					VGA_R <= std_logic_vector(red_val_cur_1);
 					VGA_G <= std_logic_vector(green_val_cur_1);
-					--VGA_B <= std_logic_vector(blue_val_cur_1);
+					VGA_B <= std_logic_vector(blue_val_cur_1);
 					
 				end if;
 			end if;
@@ -197,6 +198,63 @@ architecture arch_data_generator of data_generator is
 	end process p_green_data_val;
 
 	
+	
+	p_blue_data_val : process (clk, data_value) is
+		begin
+			if(rising_edge(clk)) then
+			
+			if(data_value = "01001" 
+				or data_value = "01010"  
+				or data_value = "01011" 
+				or data_value = "01100"
+				
+				or data_value = "11001"
+				or data_value = "11010"
+				or data_value = "11011"
+				or data_value = "11100") then
+			
+				if ((data_value and "10000") = "10000") then -- on est dans état 3 : séparation des couleurs 
+					blue_val_temp_cur <= blue_val_cur_2; 
+				else 
+					blue_val_temp_cur <= blue_val_cur_1;
+					
+				end if;
+				
+				blue_data_value_trans <= (data_value and "01111");
+				
+				if (blue_data_value_trans = "01001" and blue_val_temp_cur < "1111") then
+					blue_val_temp_next <= blue_val_temp_cur + SMALL_VAL;
+					
+					
+				elsif (blue_data_value_trans = "01010" and blue_val_temp_cur< "1111") then 
+					
+					if (blue_val_temp_cur > MAX_VAL - BIG_VAL) then
+						blue_val_temp_next <= "1111";
+					else blue_val_temp_next <= blue_val_temp_cur + BIG_VAL;
+					end if;
+				
+				elsif (blue_data_value_trans = "01011" and blue_val_cur_1 > "0000")then
+					blue_val_temp_next <= blue_val_temp_cur - SMALL_VAL;
+				
+				elsif (blue_data_value_trans = "01100" and blue_val_temp_cur > "0000") then
+					
+					if (blue_val_temp_cur < "0000" + BIG_VAL) then
+						blue_val_temp_next <= "0000";
+					else blue_val_temp_next <= blue_val_temp_cur - BIG_VAL; 
+					end if;
+					
+				end if;
+				
+				if ((data_value and "10000") = "10000") then 
+					blue_val_next_2 <= blue_val_temp_next;
+				else blue_val_next_1 <= blue_val_temp_next;
+				end if;
+				
+			end if;
+		end if;
+	
+	end process p_blue_data_val;
+	
 	p_data_gen_seq : process(clk) is
 	begin
 		if (rising_edge(clk)) then
@@ -204,8 +262,8 @@ architecture arch_data_generator of data_generator is
 			red_val_cur_2 		<= red_val_next_2;
 			green_val_cur_1 	<= green_val_next_1;				
 			green_val_cur_2 	<= green_val_next_2;
-			--blue_val_cur_1 	<= blue_val_next_1;
-			--blue_val_cur_2 	<= blue_val_next_2;
+			blue_val_cur_1 	<= blue_val_next_1;
+			blue_val_cur_2 	<= blue_val_next_2;
 
 		end if;
 		
