@@ -137,7 +137,7 @@ architecture arch_data_generator of data_generator is
 				else red_val_next_1 <= red_val_temp_next;
 				end if;
 				
-			elsif (data_value = "00000") then
+			elsif (data_value = "11111") then
 				red_val_next_1 <= "1111";
 				red_val_next_2 <= "1111";
 			end if;
@@ -195,7 +195,7 @@ architecture arch_data_generator of data_generator is
 				else green_val_next_1 <= green_val_temp_next;
 				end if;
 				
-			elsif (data_value = "0000") then
+			elsif (data_value = "11111") then
 				green_val_next_1 <= "1111";
 				green_val_next_2 <= "1111";
 				
@@ -257,7 +257,7 @@ architecture arch_data_generator of data_generator is
 				else blue_val_next_1 <= blue_val_temp_next;
 				end if;
 			
-			elsif( data_value = "00000") then 
+			elsif( data_value = "11111") then 
 				blue_val_next_1 <= "1111";
 				blue_val_next_2 <= "1111";
 				
