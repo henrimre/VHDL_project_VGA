@@ -82,6 +82,10 @@ architecture arch_data_generator of data_generator is
 					VGA_B <= std_logic_vector(blue_val_cur_1);
 					
 				end if;
+			else 
+				VGA_R <= "0000";
+				VGA_G <= "0000";
+				VGA_B <= "0000";
 			end if;
 		end if;
 	end process p_data_gen_comb;
