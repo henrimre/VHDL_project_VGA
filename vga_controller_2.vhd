@@ -44,7 +44,6 @@ architecture arch_vga_controller_2 of vga_controller_2 is
 	signal v_count_curr : unsigned (10 downto 0) := (others =>'0'); -- valeur max : 525
 	signal v_count_next : unsigned (10 downto 0) := (others =>'0');
 	
-
 	
 	begin 
 	

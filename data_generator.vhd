@@ -14,7 +14,7 @@ entity data_generator is
 	port(
 	clk					: in std_logic;
 	ctrl_area			: in std_logic;
-	--row_position 		: in unsigned(10 downto 0);
+	row_position 		: in unsigned(10 downto 0);
 	column_position	: in unsigned(10 downto 0);
 	data_value			: in std_logic_vector(4 downto 0);
 	
@@ -113,7 +113,6 @@ architecture arch_data_generator of data_generator is
 					VGA_R <= std_logic_vector(red_val_cur_1);
 					VGA_G <= std_logic_vector(green_val_cur_1);
 					VGA_B <= std_logic_vector(blue_val_cur_1);
-					end if;
 					
 				end if;
 				

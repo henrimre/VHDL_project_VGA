@@ -21,7 +21,9 @@ entity DE0_CV_golden is
 end DE0_CV_golden;
 
 architecture rtl of DE0_CV_golden is 
-
+	constant H_PIXEL 			: integer := 640;
+	constant V_PIXEL			: integer := 480;
+	
 	signal clk_gate 			: std_logic;
 	signal ctrl_area			: std_logic;
 	signal row_position 		: unsigned(10 downto 0); 
@@ -54,14 +56,21 @@ begin
 	p_data_gen_test : process(ctrl_area) is 
 	begin 
 		if(ctrl_area = '1') then 
-			VGA_R <= "1000";
-			VGA_G <= "1000";
-			VGA_B <= "0000";
+			if (row_position < V_PIXEL/2) then
+				VGA_R <= "1111";
+				VGA_G <= "1111";
+				VGA_B <= "1111";
+					
+			else 
+				VGA_R <= "1111";
+				VGA_G <= "0000";
+				VGA_B <= "0000";
+			end if;
 		
 		else 
-			VGA_R <= "0000";
-			VGA_G <= "0000";
-			VGA_B <= "0000";
+				VGA_R <= "0000";
+				VGA_G <= "0000";
+				VGA_B <= "0000";
 		end if;
 	end process p_data_gen_test;
 

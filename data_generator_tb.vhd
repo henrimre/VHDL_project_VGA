@@ -12,7 +12,7 @@ architecture tb of data_generator_tb is
 	signal clk 					: std_logic := '0';
 	signal ctrl_area 			: std_logic := '1';
 	
-	--signal row_position		: unsigned(10 downto 0) := (others => '0');
+	signal row_position		: unsigned(10 downto 0) := (others => '0');
 	signal column_position	: unsigned(10 downto 0) := (others => '0');
 	signal data_value			: std_logic_vector (4 downto 0) := (others => '0');
 	
@@ -26,7 +26,7 @@ begin
 	UUT : entity work.data_generator port map(
 	clk => clk, 
 	ctrl_area => ctrl_area,	
-	--row_position => row_position,	
+	row_position => row_position,	
 	column_position => column_position, 
 	data_value => data_value, 
 	--test => test,
