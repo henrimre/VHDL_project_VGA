@@ -29,7 +29,12 @@ architecture arch_data_generator of data_generator is
 	constant SMALL_VAL		: integer := 1;
 	constant BIG_VAL			: integer := 5;
 	constant MAX_VAL			: integer := 15;
-		
+	
+	signal separation_screen : std_logic_vector(2 downto 0); 
+		-- 00 => pas de séparation
+		-- 01 => séparation verticale 
+		-- 10 => séparation horizontale
+
 	signal red_data_value_trans 	: std_logic_vector (4 downto 0);
 	signal red_val_cur_1				: unsigned (3 downto 0) := "0100"; --valeur pour partie 1 de l'écran
 	signal red_val_next_1			: unsigned (3 downto 0) := "0100";
@@ -56,32 +61,62 @@ architecture arch_data_generator of data_generator is
 	
 	begin 
 	
-	p_data_gen_comb : process (clk, ctrl_area, column_position, data_value) is
+	p_data_sep_screen : process (clk, data_value) is 
+	begin 
+		if(rising_edge(clk)) then
+			if (data_value = "11101") then 	-- on passe à une séparation horizontale de l'écran
+				separation_screen <= "01";
+				
+			elsif(data_value = "11110") then 
+				separation_screen <= "10";
+				
+			elsif(data_value = "10000") then
+				separation_screen <= "00";
+				
+			end if;
+		end if;
+	
+	end process p_data_sep_screen;
+	
+	p_data_gen_comb : process (clk, ctrl_area, column_position, data_value, separation_screen) is
 	begin 
 		if(rising_edge(clk)) then 
 			
 			if (ctrl_area = '1') then
-				if ((data_value and "10000") = "10000") then --on est dans état 3 : séparation de l'écran en 2
+				--if ((data_value and "10000") = "10000") then -- on est dans état 3 : séparation de l'écran en 2
+					
+				if (separation_screen = "01") then --séparation horizontale de l'écran
+					
 					if (column_position < H_PIXEL/2) then
 						VGA_R <= std_logic_vector(red_val_cur_1);
-						--test <= '1';
 						VGA_G <= std_logic_vector(green_val_cur_1);
 						VGA_B <= std_logic_vector(blue_val_cur_1);
-						
+					
 					else 
 						VGA_R <= std_logic_vector(red_val_cur_2);
 						VGA_G <= std_logic_vector(green_val_cur_2);
 						VGA_B <= std_logic_vector(blue_val_cur_2);
-
+						
 					end if;
-
+				elsif (separation_screen = "10") then 
+					if (row_position < V_PIXEL/2) then 
+						VGA_R <= std_logic_vector(red_val_cur_1);
+						VGA_G <= std_logic_vector(green_val_cur_1);
+						VGA_B <= std_logic_vector(blue_val_cur_1);
+					else 
+						VGA_R <= std_logic_vector(red_val_cur_2);
+						VGA_G <= std_logic_vector(green_val_cur_2);
+						VGA_B <= std_logic_vector(blue_val_cur_2);
+						
+					end if;
 				else 
-					
 					VGA_R <= std_logic_vector(red_val_cur_1);
 					VGA_G <= std_logic_vector(green_val_cur_1);
 					VGA_B <= std_logic_vector(blue_val_cur_1);
+					end if;
 					
 				end if;
+				
 			else 
 				VGA_R <= "0000";
 				VGA_G <= "0000";
