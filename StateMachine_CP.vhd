@@ -17,7 +17,7 @@ entity StateMachine_CP is
 		clk         : in  std_logic;                                -- Clock système 50MHz
 		rst_n       : in  std_logic;                                -- Reset système
     
-		sw_menu     : in  std_logic_vector(9 downto 8);					-- Switch de navigation entre les menus
+		sw_menu     : in  std_logic_vector(4 downto 3);					-- Switch de navigation entre les menus
 		sw_color		: in  std_logic_vector(2 downto 0);					-- Switch de choix RGB
 		n_key     		: in  std_logic_vector(3 downto 0);
 		
@@ -91,7 +91,7 @@ begin
 		state_cp_nxt <= state_cp;
 		
 		-- Process combinatoire de gestion des switchs
-		case (sw_menu(9 downto 8)) is
+		case (sw_menu(4 downto 3)) is
 			when "00" => 					state_cp_nxt <= state000;
 			when "10" =>
 				case (sw_color(2 downto 0)) is
@@ -110,6 +110,7 @@ begin
 					when "100" => 			state_cp_nxt <= state330; 
 					when others => 		state_cp_nxt <= state310; 
 				end case;
+			when others => null;
 		end case;
 		
 		-- Process combinatoire de gestion des boutons
@@ -183,7 +184,7 @@ begin
 	p_seq_state : process(clk) is
 	begin
 		if rising_edge(clk) then
-			if (rst_n='1') then
+			if (rst_n='0') then
 				state_cp <= state_rst;
 			else
 				state_cp 	<= state_cp_nxt;
