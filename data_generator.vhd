@@ -129,7 +129,7 @@ architecture arch_data_generator of data_generator is
 	
 		if(rising_edge(clk)) then
 			
-			if(data_value = "00001" 
+			if(data_value = "00001" 		-- liste de tous les états provoquant une modification de la couleur rouge
 				or data_value = "00010"  
 				or data_value = "00011" 
 				or data_value = "00100"
@@ -138,14 +138,14 @@ architecture arch_data_generator of data_generator is
 				or data_value = "10011"
 				or data_value = "10100") then
 			
-				if ((data_value and "10000") = "10000") then -- on est dans état 3 : séparation des couleurs 
-					red_val_temp_cur <= red_val_cur_2; 
+				if ((data_value and "10000") = "10000") then -- on est dans état séparation des couleurs 
+					red_val_temp_cur <= red_val_cur_2; 			-- stock la valeurde le couleur de la seconde partie de l'écran dans un signal temporaire
 				else 
-					red_val_temp_cur <= red_val_cur_1;
+					red_val_temp_cur <= red_val_cur_1;			
 					
 				end if;
 				
-				red_data_value_trans <= (data_value and "01111");
+				red_data_value_trans <= (data_value and "01111"); -- les modes d'incrémentation pour les deux parties de l'écran sont les mêmes au bit de poids le plus fort près
 				
 				if (red_data_value_trans = "00001" and red_val_temp_cur < "1111") then
 					red_val_temp_next <= red_val_temp_cur + SMALL_VAL;
@@ -153,7 +153,7 @@ architecture arch_data_generator of data_generator is
 					
 				elsif (red_data_value_trans = "00010" and red_val_temp_cur< "1111") then 
 					
-					if (red_val_temp_cur > MAX_VAL - BIG_VAL) then
+					if (red_val_temp_cur > MAX_VAL - BIG_VAL) then -- vérification avant l'incrémentation si celle ci ne va pas dépasser la valeur max
 						red_val_temp_next <= "1111";
 					else red_val_temp_next <= red_val_temp_cur + BIG_VAL;
 					end if;
@@ -163,26 +163,26 @@ architecture arch_data_generator of data_generator is
 				
 				elsif (red_data_value_trans = "00100" and red_val_temp_cur > "0000") then
 					
-					if (red_val_temp_cur < "0000" + BIG_VAL) then
+					if (red_val_temp_cur < "0000" + BIG_VAL) then -- vérification avant décrémentation si on ne dépasse pas la valeur minimale
 						red_val_temp_next <= "0000";
 					else red_val_temp_next <= red_val_temp_cur - BIG_VAL; 
 					end if;
 					
 				end if;
 				
-				if ((data_value and "10000") = "10000") then 
+				if ((data_value and "10000") = "10000") then --envoie des valeurs next temporaire vers les valeurs de chaque partie d'écran correspondant
 					red_val_next_2 <= red_val_temp_next;
 				else red_val_next_1 <= red_val_temp_next;
 				end if;
 				
-			elsif (data_value = "11111") then
+			elsif (data_value = "11111") then -- reset
 				red_val_next_1 <= "1111";
 				red_val_next_2 <= "1111";
 			end if;
 		end if;
 	end process p_red_data_val;
 		
-	p_green_data_val : process(clk, data_value) is 
+	p_green_data_val : process(clk, data_value) is -- le fonctionnement du process green est identique à celui du process red, seules les valeurs des états changent
 	begin
 	
 		if(rising_edge(clk)) then
@@ -244,7 +244,7 @@ architecture arch_data_generator of data_generator is
 
 	
 	
-	p_blue_data_val : process (clk, data_value) is
+	p_blue_data_val : process (clk, data_value) is -- le fonctionnement du process blue est identique à celui du process red, seules les valeurs des états changent
 		begin
 			if(rising_edge(clk)) then
 			
@@ -306,7 +306,7 @@ architecture arch_data_generator of data_generator is
 	end process p_blue_data_val;
 	
 	
-	p_data_gen_seq : process(clk) is
+	p_data_gen_seq : process(clk) is -- partie séquentiel des process
 	begin
 		if (rising_edge(clk)) then
 			red_val_cur_1 		<= red_val_next_1;
