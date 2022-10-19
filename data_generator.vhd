@@ -30,34 +30,34 @@ architecture arch_data_generator of data_generator is
 	constant BIG_VAL			: integer := 5;
 	constant MAX_VAL			: integer := 15;
 	
-	signal separation_screen : std_logic_vector(2 downto 0); 
+	signal separation_screen : std_logic_vector(1 downto 0); 
 		-- 00 => pas de séparation
 		-- 01 => séparation verticale 
 		-- 10 => séparation horizontale
 
 	signal red_data_value_trans 	: std_logic_vector (4 downto 0);
-	signal red_val_cur_1				: unsigned (3 downto 0) := "0100"; --valeur pour partie 1 de l'écran
-	signal red_val_next_1			: unsigned (3 downto 0) := "0100";
-	signal red_val_cur_2				: unsigned (3 downto 0) := "0100"; --valeur pour partie 2 de l'écran
-	signal red_val_next_2			: unsigned (3 downto 0) := "0100";
-	signal red_val_temp_cur			: unsigned (3 downto 0) := "0100";
-	signal red_val_temp_next		: unsigned (3 downto 0) := "0100";
+	signal red_val_cur_1				: unsigned (3 downto 0) := "1100"; --valeur pour partie 1 de l'écran
+	signal red_val_next_1			: unsigned (3 downto 0) := "1100";
+	signal red_val_cur_2				: unsigned (3 downto 0) := "1100"; --valeur pour partie 2 de l'écran
+	signal red_val_next_2			: unsigned (3 downto 0) := "1100";
+	signal red_val_temp_cur			: unsigned (3 downto 0) := "1100";
+	signal red_val_temp_next		: unsigned (3 downto 0) := "1100";
 	
 	signal green_data_value_trans : std_logic_vector(4 downto 0);
-	signal green_val_cur_1			: unsigned (3 downto 0) := "0100";
-	signal green_val_next_1			: unsigned (3 downto 0) := "0100";
-	signal green_val_cur_2			: unsigned (3 downto 0) := "0100";
-	signal green_val_next_2			: unsigned (3 downto 0) := "0100";
-	signal green_val_temp_cur		: unsigned (3 downto 0) := "0100";
-	signal green_val_temp_next		: unsigned (3 downto 0) := "0100";
+	signal green_val_cur_1			: unsigned (3 downto 0) := "0000";
+	signal green_val_next_1			: unsigned (3 downto 0) := "0000";
+	signal green_val_cur_2			: unsigned (3 downto 0) := "0000";
+	signal green_val_next_2			: unsigned (3 downto 0) := "0000";
+	signal green_val_temp_cur		: unsigned (3 downto 0) := "0000";
+	signal green_val_temp_next		: unsigned (3 downto 0) := "0000";
 		
 	signal blue_data_value_trans : std_logic_vector(4 downto 0);
-	signal blue_val_cur_1			: unsigned (3 downto 0) := "0100";
-	signal blue_val_next_1			: unsigned (3 downto 0) := "0100";
-	signal blue_val_cur_2			: unsigned (3 downto 0) := "0100";
-	signal blue_val_next_2			: unsigned (3 downto 0) := "0100";
-	signal blue_val_temp_cur		: unsigned (3 downto 0) := "0100";
-	signal blue_val_temp_next		: unsigned (3 downto 0) := "0100";
+	signal blue_val_cur_1			: unsigned (3 downto 0) := "0000";
+	signal blue_val_next_1			: unsigned (3 downto 0) := "0000";
+	signal blue_val_cur_2			: unsigned (3 downto 0) := "0000";
+	signal blue_val_next_2			: unsigned (3 downto 0) := "0000";
+	signal blue_val_temp_cur		: unsigned (3 downto 0) := "0000";
+	signal blue_val_temp_next		: unsigned (3 downto 0) := "0000";
 	
 	begin 
 	
@@ -176,8 +176,8 @@ architecture arch_data_generator of data_generator is
 				end if;
 				
 			elsif (data_value = "11111") then -- reset
-				red_val_next_1 <= "1111";
-				red_val_next_2 <= "1111";
+				red_val_next_1 <= "0000";
+				red_val_next_2 <= "0000";
 			end if;
 		end if;
 	end process p_red_data_val;
@@ -234,8 +234,8 @@ architecture arch_data_generator of data_generator is
 				end if;
 				
 			elsif (data_value = "11111") then
-				green_val_next_1 <= "1111";
-				green_val_next_2 <= "1111";
+				green_val_next_1 <= "0000";
+				green_val_next_2 <= "0000";
 				
 			end if;
 		end if;

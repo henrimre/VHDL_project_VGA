@@ -9,7 +9,9 @@ entity DE0_CV_golden is
 	port( 
 		
 		CLOCK_50		: in std_logic;
-		KEY			: in std_logic_vector(0 downto 0);
+		RESET_N		: in std_logic;
+		KEY			: in std_logic_vector(3 downto 0);
+		SW				: in std_logic_vector(4 downto 0);		
 		
 		VGA_B			: out std_logic_vector(3 downto 0);
 		VGA_G			: out std_logic_vector(3 downto 0);
@@ -28,6 +30,8 @@ architecture rtl of DE0_CV_golden is
 	signal ctrl_area			: std_logic;
 	signal row_position 		: unsigned(10 downto 0); 
 	signal column_position 	: unsigned(10 downto 0); 
+	signal data_value			: std_logic_vector(4 downto 0);
+	
 	
 
 begin 
@@ -44,7 +48,7 @@ begin
 	(
 		clk 					=> CLOCK_50,
 		clk_gate				=> clk_gate,
-		reset					=> KEY(0),
+		reset					=> RESET_N,
 		
 		row_position 		=> row_position,
 		column_position 	=> column_position,
@@ -53,26 +57,54 @@ begin
 		ctrl_area			=> ctrl_area
 	);
 	
-	p_data_gen_test : process(ctrl_area) is 
-	begin 
-		if(ctrl_area = '1') then 
-			if (row_position < V_PIXEL/2) then
-				VGA_R <= "1111";
-				VGA_G <= "1111";
-				VGA_B <= "1111";
-					
-			else 
-				VGA_R <= "1111";
-				VGA_G <= "0000";
-				VGA_B <= "0000";
-			end if;
+	SM : entity work.StateMachine_CP
+	port map 
+	(
+		clk 			=> CLOCK_50,
+		rst_n 		=> RESET_N,
+		sw_menu 		=> SW(4 downto 3),
+		sw_color		=> SW(2 downto 0),
+		n_key 		=> KEY,
 		
-		else 
-				VGA_R <= "0000";
-				VGA_G <= "0000";
-				VGA_B <= "0000";
-		end if;
-	end process p_data_gen_test;
+		fsm_state	=> data_value
+		
+	);
+	
+	DG : entity work.data_generator 
+	port map
+	(
+		clk 					=> CLOCK_50,
+		ctrl_area 			=> ctrl_area,
+		row_position 		=> row_position,
+		column_position	=> column_position,
+		data_value			=> data_value,
+		
+		VGA_R					=> VGA_R,
+		VGA_G					=> VGA_G,
+		VGA_B					=> VGA_B
+		
+	);
+	
+--	p_data_gen_test : process(ctrl_area) is 
+--	begin 
+--		if(ctrl_area = '1') then 
+--			if (row_position < V_PIXEL/2) then
+--				VGA_R <= "1111";
+--				VGA_G <= "1111";
+--				VGA_B <= "1111";
+--					
+--			else 
+--				VGA_R <= "1111";
+--				VGA_G <= "0000";
+--				VGA_B <= "0000";
+--			end if;
+--		
+--		else 
+--				VGA_R <= "0000";
+--				VGA_G <= "0000";
+--				VGA_B <= "0000";
+--		end if;
+--	end process p_data_gen_test;
 
 end rtl;
 	
