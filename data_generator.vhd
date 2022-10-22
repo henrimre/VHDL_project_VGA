@@ -81,7 +81,7 @@ begin
 		 elsif(data_value = "11110") then 
 			separation_screen <= "10";
 			
-		 elsif(data_value = "10000") then
+		 elsif(data_value = "10000" or (data_value = "11111)) then
 			separation_screen <= "00";
 			
 		 end if;
@@ -245,7 +245,7 @@ begin
 		if(rising_edge(clk)) then
 
 			if((data_value_green_temp_cur /= "00000") and (data_value_green_temp_cur /= "11111")) then
-				green_data_value_trans <= (data_value_green_temp_cur and "01111");
+				green_data_value_trans <= (data_value_red_temp_cur and "01111");
 
 				if ((data_value_green_temp_cur and "10000") = "10000") then -- on est dans état 3 : séparation des couleurs 
 					green_val_temp_cur <= green_val_cur_2; 
