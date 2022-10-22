@@ -9,7 +9,7 @@ end data_generator_tb;
 
 architecture tb of data_generator_tb is 
 
-	signal clk 					: std_logic := '0';
+	signal clk 					: std_logic := '1';
 	signal ctrl_area 			: std_logic := '1';
 	
 	signal row_position		: unsigned(10 downto 0) := (others => '0');
@@ -35,8 +35,88 @@ begin
 	VGA_B => VGA_B
 	);
 	
-	data_value <= "00000", "10001" after 10 us;
 	column_position <= to_unsigned(H_PIXEL_TEST, 11);
+	
+	p_assert_data_value : process 
+	begin 
+		wait for 1.5 us; 
+		assert VGA_G = "0000" report "VGA_G problem";
+		wait;
+	
+	end process p_assert_data_value;
+	
+	p_stimuli_data_value_1 : process -- test de l'incrémentation et de la décrémentation des valeurs vertes. 
+	begin
+		wait for 20 ns;
+		data_value <= "00101";
+		wait for 20 ns;
+		data_value <= "00000";
+		wait for 0.2 us; 
+		data_value <= "00110";
+		wait for 20 ns; 
+		data_value <= "00000";
+		wait for 0.2 us; 
+		data_value <= "00111";
+		wait for 20 ns; 
+		data_value <= "00000";
+		wait for 0.2 us; 
+		data_value <= "11111";
+		wait for 20 ns; 
+		data_value <= "00000";
+		wait;
+		
+	end process p_stimuli_data_value_1;
+	
+	-- p_stimuli_data_value_2 : process -- test de l'incrémentation et de la décrémentation des valeurs rouges. 
+	-- begin
+		-- wait for 20 ns;
+		-- data_value <= "00001";
+		-- wait for 20 ns;
+		-- data_value <= "00000";
+		-- wait for 0.2 us; 
+		-- data_value <= "00010";
+		-- wait for 20 ns; 
+		-- data_value <= "00000";
+		-- wait for 0.2 us; 
+		-- data_value <= "00011";
+		-- wait for 20 ns; 
+		-- data_value <= "00000";
+		-- wait for 0.2 us; 
+		-- data_value <= "11111";
+		-- wait for 20 ns; 
+		-- data_value <= "00000";
+		-- wait;
+		
+	-- end process p_stimuli_data_value_2;
+	
+	-- p_stimuli_data_value_3 : process -- test de l'incrémentation et de la décrémentation des valeurs bleues. 
+	-- begin
+		-- wait for 20 ns;
+		-- data_value <= "01001";
+		-- wait for 20 ns;
+		-- data_value <= "00000";
+		-- wait for 0.2 us; 
+		-- data_value <= "01010";
+		-- wait for 20 ns; 
+		-- data_value <= "00000";
+		-- wait for 0.2 us; 
+		-- data_value <= "01011";
+		-- wait for 20 ns; 
+		-- data_value <= "00000";
+		-- wait for 0.2 us; 
+		-- data_value <= "11111";
+		-- wait for 20 ns; 
+		-- data_value <= "00000";
+		-- wait;
+	-- end process p_stimuli_data_value_3;
+	
+	
+	-- p_stimuli_data_value_3 : process 
+	-- begin 
+		-- wait for 20 ns; 
+		-- data_value <= 
+		
+	-- end process p_stimuli_data_value_3
 	
 	p_stimuli_clk : process
 	begin 

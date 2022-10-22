@@ -117,7 +117,7 @@ begin
 		case (state_cp) is
 		
 			-- when state000|state100|state300 => pas de changement du state ici
-			when state110 => 
+			when state110|state111|state112|state113|state114 => 
 				case (n_key(3 downto 0)) is
 					when "1110" => 		state_cp_nxt <= state111;
 					when "1101" => 		state_cp_nxt <= state112;
@@ -125,7 +125,7 @@ begin
 					when "0111" => 		state_cp_nxt <= state114;
 					when others => null;
 				end case;
-			when state120 => 
+			when state120|state121|state122|state123|state124 => 
 				case (n_key(3 downto 0)) is
 					when "1110" => 		state_cp_nxt <= state121;
 					when "1101" => 		state_cp_nxt <= state122;
@@ -133,7 +133,7 @@ begin
 					when "0111" => 		state_cp_nxt <= state124;
 					when others => null;
 				end case;
-			when state130 => 
+			when state130|state131|state132|state133|state134 => 
 				case (n_key(3 downto 0)) is
 					when "1110" => 		state_cp_nxt <= state131;
 					when "1101" => 		state_cp_nxt <= state132;
@@ -141,7 +141,7 @@ begin
 					when "0111" => 		state_cp_nxt <= state134;
 					when others => null;
 				end case;
-			when state310 => 
+			when state310|state311|state312|state313|state314 => 
 				case (n_key(3 downto 0)) is
 					when "1110" => 		state_cp_nxt <= state311;
 					when "1101" => 		state_cp_nxt <= state312;
@@ -149,7 +149,7 @@ begin
 					when "0111" => 		state_cp_nxt <= state314;
 					when others => null;
 				end case;
-			when state320 => 
+			when state320|state321|state322|state323|state324 => 
 				case (n_key(3 downto 0)) is
 					when "1110" => 		state_cp_nxt <= state321;
 					when "1101" => 		state_cp_nxt <= state322;
@@ -157,7 +157,7 @@ begin
 					when "0111" => 		state_cp_nxt <= state324;
 					when others => null;
 				end case;
-			when state330 => 
+			when state330|state331|state332|state333|state334 => 
 				case (n_key(3 downto 0)) is
 					when "1110" => 		state_cp_nxt <= state331;
 					when "1101" => 		state_cp_nxt <= state332;
@@ -165,7 +165,7 @@ begin
 					when "0111" => 		state_cp_nxt <= state334;
 					when others => null;
 				end case;
-			when state200 =>
+			when state200|state210|state220|state230 =>
 				case (n_key(3 downto 0)) is
 					when "1110" => 		state_cp_nxt <= state210;
 					when "1101" => 		state_cp_nxt <= state220;
